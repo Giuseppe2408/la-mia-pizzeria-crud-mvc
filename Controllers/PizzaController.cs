@@ -30,6 +30,7 @@ namespace la_mia_pizzeria_static.Controllers
             return View(pizza);
         }
 
+        //[HttpGet] action che fa visualizzare
         public IActionResult Create()
         {
             return View();
@@ -37,6 +38,8 @@ namespace la_mia_pizzeria_static.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        //action che salva nel db utilizzando il parametro
+
         public IActionResult Create(Pizza pizza)
         {
             if (!ModelState.IsValid)
@@ -59,21 +62,96 @@ namespace la_mia_pizzeria_static.Controllers
         //}
 
 
+        //[HttpGet] action che fa visualizzare
+        public IActionResult Edit(int id)
+        {
+
+
+
+            Pizza pizza = Db.Pizzas.Where(p => p.Id == id).FirstOrDefault();
+
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+
+            return View(pizza);
+
+            
+        }
+
+        //sfrutta come parametro l'istanza e sfrutta il metodo Update della classe DBContext di Entity framework
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Pizza pizza)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(pizza);
+            }
+
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+
+            Db.Update(pizza);
+            Db.SaveChanges();
+
+            return RedirectToAction("Index");
+
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            Pizza pizza = Db.Pizzas.Where(pizza => pizza.Id == id).FirstOrDefault();
+
+            if (pizza == null)
+            {
+                return NotFound();
+            }
+
+            Db.Remove(pizza);
+            Db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
+        //passo sia l'id che l'istanza e poi cambio i dati singolarmente facendo prima la query e poi assegnandoli
+
         //[HttpPost]
-        //public IActionResult Edit(Pizza pizza)
+        //[ValidateAntiForgeryToken]
+        //public IActionResult Edit(int id, Pizza formData)
         //{
+
         //    if (!ModelState.IsValid)
         //    {
-        //        return View();
+        //        return View(formData);
         //    }
 
+        //    if (formData == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-        //    Db.Add(pizza);
+        //    Pizza pizza = Db.Pizzas.Where(p => p.Id == id).FirstOrDefault();
+
+        //    pizza.Nome = formData.Nome;
+        //    pizza.Image = formData.Image;
+        //    pizza.Price = formData.Price;
+        //    pizza.Description = formData.Description;
+
+
 
         //    Db.SaveChanges();
 
 
+
         //    return RedirectToAction("Index");
+
+
         //}
     }  
 }
