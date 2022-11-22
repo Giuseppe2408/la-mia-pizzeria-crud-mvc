@@ -1,0 +1,32 @@
+﻿@model Pizza
+@{
+    Layout = "_ShowLayout";
+}
+ 
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <h1>Pizza n. @Model.Id</h1>
+            <h1>Pizza: @Model.Nome</h1>
+            <img class="show-pizza" src="@Model.Image"/>
+        </div>
+
+        <div class="col-6">
+            @if (Model.Description == null || Model.Description == "")
+            {
+                <span>questa pizza non ha una descrizione</span>
+            }
+            else 
+            {
+                <div class="show-description">
+                    <h1>Descrizione: </h1>
+                    <p class="show-paragraph">@Model.Description </p>
+                </div>
+            }
+            
+            <div>Prezzo: @Model.Price€</div>
+        </div>
+    </div>
+</div>

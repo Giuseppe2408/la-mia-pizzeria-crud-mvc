@@ -1,0 +1,35 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+.show-pizza {
+    max-width : 100%;
+}
+
+.show-description {
+    font-size: 3em;
+}
+
+.show-paragraph {
+    font-size: 0.8em;
+}
+
+.style-none {
+    list-style: none;
+}
