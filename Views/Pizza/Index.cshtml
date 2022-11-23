@@ -12,28 +12,32 @@
                     <div class="card col-3" style="width: 18rem;">
                         <img class="card-img-top" style="height: 200px;" src="@pizza.Image" alt="Card image cap">
                         <div class="card-body">
-                        <h5 class="card-title">@pizza.Nome</h5>
-                        <p class="card-text">@pizza.Description</p>
-                        <div>@pizza.Price</div>
-                        <a
-                            asp-controller="Pizza"
-                            asp-action="Show"
-                            asp-route-id="@pizza.Id"
+                            <h5 class="card-title">@pizza.Nome</h5>
+                            <p class="card-text">@pizza.Description</p>
+                            <span>Categoria: @pizza.Category.Title</span>
+                            <div>
+                                <strong>Prezzo: </strong>
+                                @pizza.Price
+                            </div>
+                            <a
+                                asp-controller="Pizza"
+                                asp-action="Show"
+                                asp-route-id="@pizza.Id"
                         
-                            class="btn btn-primary">Visualizza pizza
-                        </a>
-                        <a
-                            asp-controller="Pizza"
-                            asp-action="Edit"
-                            asp-route-id="@pizza.Id"
+                                class="btn btn-primary">Visualizza pizza
+                            </a>
+                            <a
+                                asp-controller="Pizza"
+                                asp-action="Edit"
+                                asp-route-id="@pizza.Id"
 
-                            class="btn btn-warning">Modifica pizza
-                        </a>
-                        <form asp-controller="Pizza" asp-action="Delete" asp-route-id="@pizza.Id" method="post">
+                                class="btn btn-warning">Modifica pizza
+                            </a>
+                            <form asp-controller="Pizza" asp-action="Delete" asp-route-id="@pizza.Id" method="post">
 
-                            <button type="submit" class="btn btn-danger">Elimina pizza</button>
+                                <button type="submit" class="btn btn-danger">Elimina pizza</button>
                             
-                        </form>
+                            </form>
                         
                         </div>
                     </div>

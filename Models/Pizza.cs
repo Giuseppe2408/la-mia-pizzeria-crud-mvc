@@ -22,11 +22,15 @@ namespace la_mia_pizzeria_static.Models
         [Range(1, 100, ErrorMessage = "Inserisci un numero positivo")]
         public double Price { get; set; }
 
-        
+
+        //relazione con category colonna nel db 
+        public int CategoryId { get; set; }
+        //relazione istanza
+        public Category? Category { get; set; }
+
 
         public Pizza()
         {
-
         }
 
         public Pizza(string nome, string image, double price)
