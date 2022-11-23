@@ -65,5 +65,30 @@ namespace la_mia_pizzeria_static.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            Category category = Db.Categories.Where(pizza => pizza.Id == id).FirstOrDefault();
+            Pizza pizza = Db.Pizzas.Where(p => p.CategoryId == id).FirstOrDefault();
+
+            if (category == null)
+            {
+                return NotFound();
+            }
+
+            if (pizza == null)
+            {
+                Db.Remove(category);
+                Db.SaveChanges();
+                return RedirectToAction("Index");
+            } else
+            {
+                return NotFound();
+            }
+
+
+            
+        }
     }
 }
