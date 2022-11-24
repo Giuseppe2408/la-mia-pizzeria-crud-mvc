@@ -6,28 +6,29 @@
 <form asp-controller="Pizza" asp-action="Create" method="post">
   @Html.AntiForgeryToken()
   <div class="form-group pb-3">
-    <label for="exampleInputEmail1">Nome</label>
+    <label asp-for="Pizza.Nome">Nome</label>
     <input type="text" class="form-control" asp-for="Pizza.Nome" placeholder="Metti il nome">
     <span class="text-danger" asp-validation-for="Pizza.Nome"></span>
   </div>
   <div class="form-group pb-3">
-    <label for="exampleInputPassword1">immagine</label>
+    <label asp-for="Pizza.Image">immagine</label>
     <input type="text" asp-for="Pizza.Image" class="form-control" placeholder="Metti url immagine">
     <span class="text-danger" asp-validation-for="Pizza.Image"></span>
   </div>
   <div class="form-group pb-3">
-    <label for="exampleCheck1">Descrizione</label>
+    <label asp-for="Pizza.Description">Descrizione</label>
     <textarea type="text" asp-for="Pizza.Description" class="form-control" placeholder="Metti descrizione"></textarea> 
     <span class="text-danger" asp-validation-for="Pizza.Description"></span>
   </div>
 
   <div class="form-group pb-5">
-    <label for="exampleCheck1">Prezzo</label>
+    <label asp-for="Pizza.Price">Prezzo</label>
     <input type="number" asp-for="Pizza.Price" class="form-control" placeholder="Metti prezzo">
     <span class="text-danger" asp-validation-for="Pizza.Price"></span>
   </div>
 
-  <select asp-for="Pizza.CategoryId" class="form-select">
+  <div>Scegli la Categoria:</div>
+  <select asp-for="Pizza.CategoryId" class="form-select mb-5">
       @foreach (Category category in Model.Categories) 
       {
             @if (category.Id == Model.Pizza.CategoryId)
@@ -39,6 +40,7 @@
       }
   </select>
 
+  <div>Scegli gli ingredienti:</div>
   <select asp-for="SelectedIngredients" 
       asp-items="@Model.Ingredients" 
       multiple="multiple" 

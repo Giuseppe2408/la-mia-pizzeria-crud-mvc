@@ -1,6 +1,7 @@
 ﻿using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Controllers
 {
@@ -69,18 +70,15 @@ namespace la_mia_pizzeria_static.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            Category category = Db.Categories.Where(pizza => pizza.Id == id).FirstOrDefault();
-            Pizza pizza = Db.Pizzas.Where(p => p.CategoryId == id).FirstOrDefault();
+            Category category = Db.Categories.Where(c => c.Id == id).Include(c => c.Pizzas).FirstOrDefault();
 
-            if (category == null)
-            {
-                return NotFound();
-            }
+            //Pizza pizza = Db.Pizzas.Where(p => p.CategoryId == id).FirstOrDefault();
 
-            if (pizza == null)
-            {
+            if (category.Pizzas.Count == 0)
+            {                
                 Db.Remove(category);
                 Db.SaveChanges();
+                             
                 return RedirectToAction("Index");
             } else
             {
