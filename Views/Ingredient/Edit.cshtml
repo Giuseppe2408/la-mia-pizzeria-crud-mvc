@@ -1,0 +1,11 @@
+﻿@model Ingredient;
+
+<form asp-controller="Ingredient" asp-action="Edit" asp-route-id="@Model.Id" method="post">
+    @Html.AntiForgeryToken()
+  <div class="form-group pb-3">
+    <label asp-for="Title">Titolo</label>
+    <input type="text" class="form-control" asp-for="Title" placeholder="Metti il nome">
+    <span class="text-danger" asp-validation-for="Title"></span>
+  </div>
+  <button type="submit" class="btn btn-success">Salva</button>
+</form>
