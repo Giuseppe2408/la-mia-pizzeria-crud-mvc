@@ -25,7 +25,14 @@
                     <p class="show-paragraph">@Model.Description </p>
                 </div>
             }
-            
+            <div>Categoria: @Model.Category.Title</div>
+            <ul>
+                <strong>Ingredienti:</strong>
+                @foreach (Ingredient ingredient in Model.Ingredients) 
+                {
+                    <li>@ingredient.Title</li>
+                }
+            </ul>
             <div>Prezzo: @Model.Price€</div>
         </div>
     </div>
