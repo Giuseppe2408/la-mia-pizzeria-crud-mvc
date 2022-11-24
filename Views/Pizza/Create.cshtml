@@ -39,5 +39,12 @@
       }
   </select>
 
+  <select asp-for="SelectedIngredients" 
+      asp-items="@Model.Ingredients" 
+      multiple="multiple" 
+      class="form-select">
+        
+  </select>
+
   <button type="submit" class="btn btn-primary mt-5">Salva</button>
 </form>

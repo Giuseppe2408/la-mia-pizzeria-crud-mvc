@@ -1,7 +1,9 @@
-﻿using la_mia_pizzeria_static.Data;
+﻿using Azure;
+using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Form;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Controllers
@@ -19,14 +21,14 @@ namespace la_mia_pizzeria_static.Controllers
         public IActionResult Index()
         {
 
-            List<Pizza> pizzaList = Db.Pizzas.Include(pizza => pizza.Category).ToList();
+            List<Pizza> pizzaList = Db.Pizzas.Include(pizza => pizza.Category).Include(p => p.Ingredients).ToList();
             return View(pizzaList);
         }
 
         public IActionResult Show(int id)
         {
 
-            Pizza pizza = Db.Pizzas.Where(p => p.Id == id).FirstOrDefault();
+            Pizza pizza = Db.Pizzas.Where(p => p.Id == id).Include(p => p.Category).Include(p => p.Ingredients).FirstOrDefault();
 
             return View(pizza);
         }
@@ -38,6 +40,15 @@ namespace la_mia_pizzeria_static.Controllers
 
             formData.Pizza = new Pizza();
             formData.Categories = Db.Categories.ToList();
+            formData.Ingredients = new List<SelectListItem>();
+
+            List<Ingredient> ingredientList = Db.Ingredients.ToList();
+
+            foreach (Ingredient ingredient in ingredientList)
+            {
+                //nella tabella ingredienti aggiungo dei selectItem riempiendo la Lista di selectItem
+                formData.Ingredients.Add(new SelectListItem(ingredient.Title, ingredient.Id.ToString()));
+            }
 
             return View(formData);
         }
@@ -48,15 +59,39 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Create(PizzaForm formData)
         {
-           
+            
 
             if (!ModelState.IsValid)
             {
                 formData.Categories = Db.Categories.ToList();
+                formData.Ingredients = new List<SelectListItem>();
+                
+
+                List<Ingredient> ingredientList = Db.Ingredients.ToList();
+
+                foreach (Ingredient ingredient in ingredientList)
+                {
+                    //nella tabella ingredienti aggiungo dei selectItem riempiendo la Lista di selectItem
+                    formData.Ingredients.Add(new SelectListItem(ingredient.Title, ingredient.Id.ToString()));
+                }
+
                 return View();
             }
 
+            
 
+            formData.Pizza.Ingredients = new List<Ingredient>();
+
+            foreach (int ingredientId in formData.SelectedIngredients)
+            {
+                Ingredient ingredient = Db.Ingredients.Where(i => i.Id == ingredientId).FirstOrDefault();
+                formData.Pizza.Ingredients.Add(ingredient);
+            }
+
+
+
+
+            //aggiungo al db il formData.pizza con i nuovi ingredienti
             Db.Add(formData.Pizza);
 
             Db.SaveChanges();
