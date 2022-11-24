@@ -2,6 +2,7 @@
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Form;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Controllers
 {
@@ -60,6 +61,25 @@ namespace la_mia_pizzeria_static.Controllers
 
             Db.Update(ingredient);
             Db.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult Delete(int id)
+        {
+            Ingredient ingredient = Db.Ingredients.Where(i => i.Id == id).Include(i => i.Pizza).FirstOrDefault();
+
+            if (ingredient.Pizza.Count == 0)
+            {
+                Db.Remove(ingredient);
+                Db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return NotFound();
+            }
 
             return RedirectToAction("Index");
         }
