@@ -13,8 +13,6 @@ namespace la_mia_pizzeria_static.Controllers
     public class PizzaController : Controller
     {
 
-        PizzaDbContext Db { get; set; }
-
         private DbPizzaRepository pizzaRepository;
 
         private DbCategoryRepository categoryRepository;
@@ -23,7 +21,6 @@ namespace la_mia_pizzeria_static.Controllers
 
         public PizzaController()
         {
-            Db = PizzaDbContext.Instance;
             pizzaRepository = new DbPizzaRepository();
             categoryRepository = new DbCategoryRepository();
             ingredientRepository = new DbIngredientRepository();
@@ -75,7 +72,7 @@ namespace la_mia_pizzeria_static.Controllers
                 formData.Ingredients = new List<SelectListItem>();
                 
 
-                List<Ingredient> ingredientList = Db.Ingredients.ToList();
+                List<Ingredient> ingredientList = ingredientRepository.All();
 
                 foreach (Ingredient ingredient in ingredientList)
                 {
@@ -86,6 +83,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View();
             }
 
+            
 
             pizzaRepository.Create(formData.Pizza, formData.SelectedIngredients);
 
@@ -116,7 +114,7 @@ namespace la_mia_pizzeria_static.Controllers
             pizzaForm.Categories = categoryRepository.All();
             pizzaForm.Ingredients = new List<SelectListItem>();
 
-            List<Ingredient> ingredientList = Db.Ingredients.ToList();
+            List<Ingredient> ingredientList = ingredientRepository.All();
 
             foreach (Ingredient ingredient in ingredientList)
             {
@@ -146,10 +144,11 @@ namespace la_mia_pizzeria_static.Controllers
                 formData.Categories = categoryRepository.All();
                 formData.Ingredients = new List<SelectListItem>();
 
-                List<Ingredient> ingredientList = Db.Ingredients.ToList();
+                List<Ingredient> ingredientList = ingredientRepository.All();
 
                 foreach (Ingredient ingredient in ingredientList)
                 {
+                    //nella tabella ingredienti aggiungo dei selectItem riempiendo la Lista di selectItem
                     formData.Ingredients.Add(new SelectListItem(ingredient.Title, ingredient.Id.ToString()));
                 }
 

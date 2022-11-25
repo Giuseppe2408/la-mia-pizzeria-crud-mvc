@@ -6,7 +6,7 @@ using Microsoft.SqlServer.Server;
 
 namespace la_mia_pizzeria_static.Models.Repository
 {
-    public class DbPizzaRepository
+    public class DbPizzaRepository : IDbPizzaRepository
     {
         private PizzaDbContext db;
 

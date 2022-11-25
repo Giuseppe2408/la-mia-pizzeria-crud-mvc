@@ -36,7 +36,7 @@ namespace la_mia_pizzeria_static.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-           categoryRepository.Createcat(category);
+            categoryRepository.Createcat(category);
 
             return RedirectToAction("Index");
         }

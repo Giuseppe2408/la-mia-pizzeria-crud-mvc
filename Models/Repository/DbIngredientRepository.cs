@@ -4,7 +4,7 @@ using Microsoft.SqlServer.Server;
 
 namespace la_mia_pizzeria_static.Models.Repository
 {
-    public class DbIngredientRepository
+    public class DbIngredientRepository : IDbIngredientRepository
     {
         private PizzaDbContext db;
 
@@ -23,29 +23,26 @@ namespace la_mia_pizzeria_static.Models.Repository
             return db.Ingredients.Find(id);
         }
 
-   
-        //public void Createcat(Category category)
-        //{
-        //    db.Ingredients.Add(category);
-        //    db.SaveChanges();
-        //}
 
-        //public void UpdateCat(Category category)
-        //{
-        //    db.Update(category);
-        //    db.SaveChanges();
-        //}
+        public void CreateIng(Ingredient ingredient)
+        {
+            db.Ingredients.Add(ingredient);
+            db.SaveChanges();
+        }
 
-        //public Category GetByIdWithPizza(int id)
-        //{
-        //    return db.Ingredients.Where(c => c.Id == id).Include(c => c.Pizzas).FirstOrDefault();
-        //}
+        public void UpdateIng(Ingredient ingredient)
+        {
+            db.Update(ingredient);
+            db.SaveChanges();
 
-        //public void DeleteCat(Category category)
-        //{
-        //    db.Remove(category);
-        //    db.SaveChanges();
+        }
 
-    }
+
+
+        public void DeleteIng(Ingredient ingredient)
+        {
+            db.Remove(ingredient);
+            db.SaveChanges();
+        }
     }
 }

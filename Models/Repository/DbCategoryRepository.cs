@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Models.Repository
 {
-    public class DbCategoryRepository
+    public class DbCategoryRepository : IDbCategoryRepository
     {
 
         private PizzaDbContext db;
