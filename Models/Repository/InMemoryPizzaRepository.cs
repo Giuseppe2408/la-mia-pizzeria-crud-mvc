@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace la_mia_pizzeria_static.Models.Repository
 {
-    public class InMemoryPizzaRepository : IDbPizzaRepository
+    public class InMemoryPizzaRepository : IPizzaRepository
     {
         public static List<Pizza> Pizzas = new List<Pizza>();
 

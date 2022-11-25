@@ -42,7 +42,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return View();
             }
 
-            ingredientRepository.CreateIng(ingredient);
+            ingredientRepository.Create(ingredient);
 
             return RedirectToAction("Index");
             
@@ -50,7 +50,7 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Edit(int id)
         {
-            Ingredient ingredient = ingredientRepository.GetIngById(id);
+            Ingredient ingredient = ingredientRepository.GetById(id);
 
 
             return View(ingredient);
@@ -62,7 +62,7 @@ namespace la_mia_pizzeria_static.Controllers
         {
             ingredient.Id = id;
 
-            ingredientRepository.UpdateIng(ingredient);
+            ingredientRepository.Update(ingredient);
 
             return RedirectToAction("Index");
         }
@@ -73,7 +73,7 @@ namespace la_mia_pizzeria_static.Controllers
 
             if (ingredient.Pizza.Count == 0)
             {
-                ingredientRepository.DeleteIng(ingredient);
+                ingredientRepository.Delete(ingredient);
 
                 return RedirectToAction("Index");
             }

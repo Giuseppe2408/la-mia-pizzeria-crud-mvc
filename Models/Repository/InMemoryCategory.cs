@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace la_mia_pizzeria_static.Models.Repository
 {
-    public class InMemoryCategory : IDbCategoryRepository
+    public class InMemoryCategory : ICategoryRepository
     {
         public List<Category> Categories = new List<Category>();
 
@@ -13,34 +13,38 @@ namespace la_mia_pizzeria_static.Models.Repository
             return Categories;
         }
 
-        public void Createcat(Category category)
+        public void Create(Category category)
         {
             category.Id = Categories.Count;
             Categories.Add(category);
         }
 
-        public void DeleteCat(Category category)
+        public void Delete(Category category)
         {
-            throw new NotImplementedException();
+            Categories.Remove(category);
         }
 
         public Category GetByIdWithPizza(int id)
         {
+
+            //fare include a mano qui
             Category category = Categories.Where(c => c.Id == id).FirstOrDefault();
             
-            Categories.Add(category.Pizzas);
+            
             
             return category;
         }
 
-        public Category GetCatById(int id)
+        public Category GetById(int id)
         {
             return Categories.Where(c => c.Id == id).FirstOrDefault();
         }
 
-        public void UpdateCat(Category category)
+        public void Update(Category category, Category formData)
         {
-            throw new NotImplementedException();
+            category.Title = formData.Title;
+
+            Categories.Add(category);
         }
     }
 }

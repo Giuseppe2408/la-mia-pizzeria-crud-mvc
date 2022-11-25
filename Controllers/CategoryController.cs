@@ -36,14 +36,14 @@ namespace la_mia_pizzeria_static.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            categoryRepository.Createcat(category);
+            categoryRepository.Create(category);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
         {
-            Category category = categoryRepository.GetCatById(id);
+            Category category = categoryRepository.GetById(id);
             if(category == null)
             {
                 return NotFound();
@@ -75,7 +75,7 @@ namespace la_mia_pizzeria_static.Controllers
 
             if (category.Pizzas.Count == 0)
             {
-                categoryRepository.DeleteCat(category);
+                categoryRepository.Delete(category);
 
                 return RedirectToAction("Index");
             }
