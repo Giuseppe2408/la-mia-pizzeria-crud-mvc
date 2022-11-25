@@ -1,6 +1,7 @@
 ﻿using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
 using la_mia_pizzeria_static.Models.Form;
+using la_mia_pizzeria_static.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,15 +12,18 @@ namespace la_mia_pizzeria_static.Controllers
 
         PizzaDbContext Db { get; set; }
 
+
+        private DbIngredientRepository ingredientRepository;
         public IngredientController()
         {
-            Db = new PizzaDbContext();
+            Db = PizzaDbContext.Instance;
+            ingredientRepository = new DbIngredientRepository();
         }
 
 
         public IActionResult Index()
         {
-            List<Ingredient> ingredients = Db.Ingredients.ToList();
+            List<Ingredient> ingredients = ingredientRepository.All();
             return View(ingredients);
         }
 
@@ -47,7 +51,7 @@ namespace la_mia_pizzeria_static.Controllers
 
         public IActionResult Edit(int id)
         {
-            Ingredient ingredient = Db.Ingredients.Find(id);
+            Ingredient ingredient = 
 
 
             return View(ingredient);

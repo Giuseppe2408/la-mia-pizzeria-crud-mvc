@@ -5,6 +5,25 @@ namespace la_mia_pizzeria_static.Data
 {
     public class PizzaDbContext : DbContext
     {
+
+        public static PizzaDbContext Instance
+        {
+            get
+            {
+                if (_instance == null)
+                {
+                    _instance = new PizzaDbContext();
+                }
+                return _instance;
+            }
+        }
+        private static PizzaDbContext _instance;
+        private PizzaDbContext()
+        {
+
+        }
+
+
         public DbSet<Pizza> Pizzas { get; set; }
 
         public DbSet<Category> Categories { get; set; }

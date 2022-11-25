@@ -1,5 +1,6 @@
 ﻿using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
+using la_mia_pizzeria_static.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,17 +8,18 @@ namespace la_mia_pizzeria_static.Controllers
 {
     public class CategoryController : Controller
     {
-        PizzaDbContext Db { get; set; }
+        
+        private DbCategoryRepository categoryRepository;
 
         public CategoryController()
         {
-            Db = new PizzaDbContext();
+            categoryRepository = new DbCategoryRepository();
         }
 
 
         public IActionResult Index()
         {
-            List<Category> categories = Db.Categories.ToList();   
+            List<Category> categories = categoryRepository.All();   
             return View(categories);
         }
 
@@ -34,16 +36,14 @@ namespace la_mia_pizzeria_static.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            Db.Categories.Add(category);
-            Db.SaveChanges();
+           categoryRepository.Createcat(category);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult Edit(int id)
         {
-            Category category = Db.Categories.Where(cat => cat.Id == id).FirstOrDefault();
-
+            Category category = categoryRepository.GetCatById(id);
             if(category == null)
             {
                 return NotFound();
@@ -60,8 +60,7 @@ namespace la_mia_pizzeria_static.Controllers
             if (!ModelState.IsValid)
                 return View();
 
-            Db.Update(category);
-            Db.SaveChanges();
+            categoryRepository.UpdateCat(category);
             
 
             return RedirectToAction("Index");
@@ -70,23 +69,22 @@ namespace la_mia_pizzeria_static.Controllers
         [HttpPost]
         public IActionResult Delete(int id)
         {
-            Category category = Db.Categories.Where(c => c.Id == id).Include(c => c.Pizzas).FirstOrDefault();
+            Category category = categoryRepository.GetByIdWithPizza(id);
 
             //Pizza pizza = Db.Pizzas.Where(p => p.CategoryId == id).FirstOrDefault();
 
             if (category.Pizzas.Count == 0)
-            {                
-                Db.Remove(category);
-                Db.SaveChanges();
-                             
+            {
+                categoryRepository.DeleteCat(category);
+
                 return RedirectToAction("Index");
-            } else
+            }
+            else
             {
                 return NotFound();
             }
 
 
-            
         }
     }
 }
