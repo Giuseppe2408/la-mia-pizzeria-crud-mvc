@@ -10,14 +10,14 @@ namespace la_mia_pizzeria_static.Controllers
     public class IngredientController : Controller
     {
 
-        PizzaDbContext Db { get; set; }
+ 
 
+        private IIngredientRepository ingredientRepository;
 
-        private DbIngredientRepository ingredientRepository;
-        public IngredientController()
+        public IngredientController(IIngredientRepository _ingredientRepository)
         {
-            Db = PizzaDbContext.Instance;
-            ingredientRepository = new DbIngredientRepository();
+            
+            ingredientRepository = _ingredientRepository;
         }
 
 
@@ -58,18 +58,20 @@ namespace la_mia_pizzeria_static.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Ingredient ingredient)
+        public IActionResult Edit(int id, Ingredient formData)
         {
-            ingredient.Id = id;
+            
 
-            ingredientRepository.Update(ingredient);
+            Ingredient ingredientItem = ingredientRepository.GetById(id);
+
+            ingredientRepository.Update(ingredientItem, formData);
 
             return RedirectToAction("Index");
         }
 
         public IActionResult Delete(int id)
         {
-            Ingredient ingredient = Db.Ingredients.Where(i => i.Id == id).Include(i => i.Pizza).FirstOrDefault();
+            Ingredient ingredient = ingredientRepository.GetById(id);
 
             if (ingredient.Pizza.Count == 0)
             {
@@ -82,7 +84,7 @@ namespace la_mia_pizzeria_static.Controllers
                 return NotFound();
             }
 
-            
-        }
+
+    }
     }
 }

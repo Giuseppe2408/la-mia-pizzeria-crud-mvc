@@ -5,7 +5,7 @@ namespace la_mia_pizzeria_static.Models.Repository
 {
     public class InMemoryCategory : ICategoryRepository
     {
-        public List<Category> Categories = new List<Category>();
+        public static List<Category> Categories = new List<Category>();
 
 
         public List<Category> All()
@@ -29,9 +29,9 @@ namespace la_mia_pizzeria_static.Models.Repository
 
             //fare include a mano qui
             Category category = Categories.Where(c => c.Id == id).FirstOrDefault();
-            
-            
-            
+
+
+
             return category;
         }
 

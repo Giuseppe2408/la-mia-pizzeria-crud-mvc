@@ -4,7 +4,7 @@ namespace la_mia_pizzeria_static.Models.Repository
 {
     public class inMemoryIngredient : IIngredientRepository
     {
-        public List<Ingredient> Ingredients = new List<Ingredient>();
+        public static List<Ingredient> Ingredients = new List<Ingredient>();
 
         public List<Ingredient> All()
         {

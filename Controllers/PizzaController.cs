@@ -13,17 +13,17 @@ namespace la_mia_pizzeria_static.Controllers
     public class PizzaController : Controller
     {
 
-        private DbPizzaRepository pizzaRepository;
+        private IPizzaRepository pizzaRepository;
 
-        private DbCategoryRepository categoryRepository;
+        private ICategoryRepository categoryRepository;
 
-        private DbIngredientRepository ingredientRepository;
+        private IIngredientRepository ingredientRepository;
 
-        public PizzaController()
+        public PizzaController(IPizzaRepository _pizzaRepository, ICategoryRepository _categoryRepository, IIngredientRepository _ingredientRepository)
         {
-            pizzaRepository = new DbPizzaRepository();
-            categoryRepository = new DbCategoryRepository();
-            ingredientRepository = new DbIngredientRepository();
+            pizzaRepository = _pizzaRepository;
+            categoryRepository = _categoryRepository;
+            ingredientRepository = _ingredientRepository;
         }
 
 
@@ -54,7 +54,12 @@ namespace la_mia_pizzeria_static.Controllers
 
             List<Ingredient> ingredientList = ingredientRepository.All();
 
-            
+            foreach (Ingredient ingredient in ingredientList)
+            {
+                //nella tabella ingredienti aggiungo dei selectItem riempiendo la Lista di selectItem
+                formData.Ingredients.Add(new SelectListItem(ingredient.Title, ingredient.Id.ToString()));
+            }
+
             return View(formData);
         }
 

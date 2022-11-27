@@ -7,6 +7,10 @@ namespace la_mia_pizzeria_static.Models.Repository
     {
         public static List<Pizza> Pizzas = new List<Pizza>();
 
+        public static InMemoryCategory inMemoryCategory;
+
+        public static inMemoryIngredient inMemoryIngredient;
+        //ricordarsi di fare l'implementazione interfaccia e assegnare la Variabile di tipo  interfaccia
         public List<Pizza> All()
         {
             return Pizzas;   
@@ -15,10 +19,10 @@ namespace la_mia_pizzeria_static.Models.Repository
         public void Create(Pizza pizza, List<int> selectedIngredients)
         {
             pizza.Id = selectedIngredients.Count;
-            pizza.Category = new Category() { Id = 1, Title = "Fake cateogry" };
+            pizza.Category = inMemoryCategory.GetById(pizza.CategoryId);
 
             //simulazione da implentare con ListTagRepository
-            pizza.Ingredients= new List<Ingredient>();
+            pizza.Ingredients = inMemoryIngredient.All();
 
             IngredientToPizza(pizza, selectedIngredients);
             //fine simulazione
@@ -28,11 +32,12 @@ namespace la_mia_pizzeria_static.Models.Repository
 
         private static void IngredientToPizza(Pizza pizza, List<int> selectedIngredients)
         {
-            pizza.Category = new Category() { Id = 1, Title = "Fake cateogry" };
+            //pizza.Category = inMemoryCategory.GetById(pizza.CategoryId);
 
             foreach (int ingredientId in selectedIngredients)
             {
-                pizza.Ingredients.Add(new Ingredient() { Id = ingredientId, Title = "Fake ingredient " + ingredientId });
+                Ingredient ingredient = inMemoryIngredient.GetById(ingredientId);
+                pizza.Ingredients.Add(ingredient);
             }
         }
 
@@ -40,20 +45,29 @@ namespace la_mia_pizzeria_static.Models.Repository
         {
             Pizza pizza = Pizzas.Where(p => p.Id == id).FirstOrDefault();
 
-            pizza.Category = new Category() { Id = 1, Title = "Fake category" };
-            pizza.Ingredients = new List<Ingredient>(); 
+            pizza.Category = inMemoryCategory.GetById(pizza.CategoryId);
+            pizza.Ingredients = inMemoryIngredient.All(); 
 
             return pizza;
         }
 
         public void MyRemove(Pizza pizza)
         {
-            throw new NotImplementedException();
+            Pizzas.Remove(pizza);
         }
 
         public void Update(Pizza pizza, Pizza formData, List<int> selectedIngredients)
         {
-            throw new NotImplementedException();
+            pizza = formData;
+
+            pizza.Ingredients = new List<Ingredient>();
+
+            if (selectedIngredients == null)
+            {
+                selectedIngredients = new List<int>();
+            }
+
+            IngredientToPizza(pizza, selectedIngredients);
         }
     }
 }

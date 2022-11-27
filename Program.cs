@@ -1,9 +1,17 @@
+using la_mia_pizzeria_static.Models.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddScoped<IPizzaRepository, InMemoryPizzaRepository>();
+builder.Services.AddScoped<ICategoryRepository, InMemoryCategory>();
+builder.Services.AddScoped<IIngredientRepository, inMemoryIngredient>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages()
     .AddRazorRuntimeCompilation();
+
+
 
 var app = builder.Build();
 

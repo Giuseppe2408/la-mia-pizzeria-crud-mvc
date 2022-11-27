@@ -1,5 +1,6 @@
 ﻿using la_mia_pizzeria_static.Data;
 using la_mia_pizzeria_static.Models;
+using la_mia_pizzeria_static.Models.Form;
 using la_mia_pizzeria_static.Models.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,11 +10,11 @@ namespace la_mia_pizzeria_static.Controllers
     public class CategoryController : Controller
     {
         
-        private DbCategoryRepository categoryRepository;
+        private ICategoryRepository categoryRepository;
 
-        public CategoryController()
+        public CategoryController(ICategoryRepository _categoryRepository)
         {
-            categoryRepository = new DbCategoryRepository();
+            categoryRepository = _categoryRepository;
         }
 
 
@@ -53,14 +54,16 @@ namespace la_mia_pizzeria_static.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Category category)
+        public IActionResult Edit(int id, Category formData)
         {
-            category.Id = id;
+            //category.Id = id;
 
             if (!ModelState.IsValid)
                 return View();
 
-            categoryRepository.UpdateCat(category);
+            Category categoryItem = categoryRepository.GetById(id);
+
+            categoryRepository.Update(categoryItem, formData);
             
 
             return RedirectToAction("Index");
